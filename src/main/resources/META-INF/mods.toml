@@ -1,0 +1,43 @@
+# Loader metadata
+modLoader = "javafml"
+loaderVersion = "[40,)"
+license = "EUPL-1.2"
+issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
+
+# TFC
+[[mods]]
+    modId = "tfc"
+    version = "${file.jarVersion}"
+    displayName = "TerraFirmaCraft"
+    credits = "By AlcatrazEscapee, Disastermoo, Dries007, Bunsan, Claycorp, DavidTriphon, EERussianguy, Gaelmare, and many others. Based on the original work by Bioxx, Dunk, and Kitty. Music by Mike \"Menoch\" Pelaez"
+    authors = "AlcatrazEscapee"
+    description = '''TerraFirmaCraft - The Next Generation'''
+
+# Dependencies
+[[dependencies.tfc]]
+    modId = "patchouli"
+    mandatory = true
+    versionRange = "[1.18.2-67,)"
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies.tfc]]
+    modId = "jei"
+    mandatory = false
+    versionRange = "[9.7.0,)"
+    ordering = "NONE"
+    side = "CLIENT"
+
+[[dependencies.tfc]]
+    modId = "forge"
+    mandatory = true
+    versionRange = "[40.1.73,)"
+    ordering = "AFTER"
+    side = "BOTH"
+
+[[dependencies.tfc]]
+    modId = "minecraft"
+    mandatory = true
+    versionRange = "[1.18.2,)"
+    ordering = "AFTER"
+    side = "BOTH"

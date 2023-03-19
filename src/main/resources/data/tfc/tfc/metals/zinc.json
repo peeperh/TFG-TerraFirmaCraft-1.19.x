@@ -1,0 +1,13 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "tier": 1,
+  "fluid": "tfc:metal/zinc",
+  "melt_temperature": 420,
+  "specific_heat_capacity": 0.01429,
+  "ingots": {
+    "tag": "forge:ingots/zinc"
+  },
+  "sheets": {
+    "tag": "forge:sheets/zinc"
+  }
+}
