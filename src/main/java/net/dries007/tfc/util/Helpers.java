@@ -40,7 +40,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -50,6 +50,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
@@ -87,7 +88,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleRandomFeatureConfiguration;
@@ -239,7 +239,7 @@ public final class Helpers
         return t instanceof Collection<?> c ? (Stream<? extends R>) c.stream() : (t instanceof Stream<?> s ? (Stream<? extends R>) s : Stream.of((R) t));
     }
 
-    public static TranslatableComponent translateEnum(Enum<?> anEnum)
+    public static TranslatableContents translateEnum(Enum<?> anEnum)
     {
         return Helpers.translatable(getEnumTranslationKey(anEnum));
     }
@@ -255,17 +255,17 @@ public final class Helpers
     /**
      * Use over invoking the constructor, as Mojang refactors this in 1.19
      */
-    public static TranslatableComponent translatable(String key)
+    public static TranslatableContents translatable(String key)
     {
-        return new TranslatableComponent(key);
+        return new TranslatableContents(key);
     }
 
     /**
      * Use over invoking the constructor, as Mojang refactors this in 1.19
      */
-    public static TranslatableComponent translatable(String key, Object... args)
+    public static TranslatableContents translatable(String key, Object... args)
     {
-        return new TranslatableComponent(key, args);
+        return new TranslatableContents(key, args);
     }
 
     /**
@@ -1228,21 +1228,21 @@ public final class Helpers
     // todo: 1.19. inline and remove these
     public static void openScreen(ServerPlayer player, MenuProvider containerSupplier)
     {
-        NetworkHooks.openGui(player, containerSupplier);
+        NetworkHooks.openScreen(player, containerSupplier);
     }
 
     public static void openScreen(ServerPlayer player, MenuProvider containerSupplier, BlockPos pos)
     {
-        NetworkHooks.openGui(player, containerSupplier, pos);
+        NetworkHooks.openScreen(player, containerSupplier, pos);
     }
 
     public static void openScreen(ServerPlayer player, MenuProvider containerSupplier, Consumer<FriendlyByteBuf> extraDataWriter)
     {
-        NetworkHooks.openGui(player, containerSupplier, extraDataWriter);
+        NetworkHooks.openScreen(player, containerSupplier, extraDataWriter);
     }
 
     /**
-     * Based on {@link net.minecraft.world.entity.Mob#maybeDisableShield} without hardcoding and whatever
+     * Based on  without hardcoding and whatever
      */
     public static void maybeDisableShield(ItemStack axe, ItemStack shield, Player player, LivingEntity attacker)
     {
@@ -1382,12 +1382,12 @@ public final class Helpers
 
     public static boolean isEntity(Entity entity, TagKey<EntityType<?>> tag)
     {
-        return checkTag(ForgeRegistries.ENTITIES, entity.getType(), tag);
+        return checkTag(ForgeRegistries.ENTITY_TYPES, entity.getType(), tag);
     }
 
     public static boolean isEntity(EntityType<?> entity, TagKey<EntityType<?>> tag)
     {
-        return checkTag(ForgeRegistries.ENTITIES, entity, tag);
+        return checkTag(ForgeRegistries.ENTITY_TYPES, entity, tag);
     }
 
     public static <T extends IForgeRegistryEntry<T>> Holder<T> getHolder(IForgeRegistry<T> registry, T object)

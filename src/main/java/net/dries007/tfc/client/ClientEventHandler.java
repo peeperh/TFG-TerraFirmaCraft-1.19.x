@@ -55,11 +55,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.ClientRegistry;
-import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
@@ -189,6 +188,7 @@ import net.dries007.tfc.mixin.client.accessor.BiomeColorsAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
+import static net.dries007.tfc.client.TFCKeyBindings.PLACE_BLOCK;
 import static net.dries007.tfc.common.blocks.wood.Wood.BlockType.*;
 
 public final class ClientEventHandler
@@ -326,9 +326,9 @@ public final class ClientEventHandler
         });
 
         // Keybindings
-        ClientRegistry.registerKeyBinding(TFCKeyBindings.PLACE_BLOCK);
-        ClientRegistry.registerKeyBinding(TFCKeyBindings.CYCLE_CHISEL_MODE);
-        ClientRegistry.registerKeyBinding(TFCKeyBindings.STACK_FOOD);
+        RegisterKeyMappingsEvent.register(PLACE_BLOCK);
+        RegisterKeyMappingsEvent.register(TFCKeyBindings.CYCLE_CHISEL_MODE);
+        RegisterKeyMappingsEvent.register(TFCKeyBindings.STACK_FOOD);
 
         // Render Types
         final RenderType solid = RenderType.solid();
@@ -577,12 +577,12 @@ public final class ClientEventHandler
         IngameOverlays.reloadOverlays();
     }
 
-    public static void registerModelLoaders(ModelRegistryEvent event)
+    public static void registerModelLoaders(RegisterClientReloadListenersEvent event)
     {
         ModelLoaderRegistry.registerLoader(Helpers.identifier("contained_fluid"), new ContainedFluidModel.Loader());
     }
 
-    public static void registerColorHandlerBlocks(ColorHandlerEvent.Block event)
+    public static void registerColorHandlerBlocks(RegisterColorHandlersEvent.Block event)
     {
         final BlockColors registry = event.getBlockColors();
         final BlockColor grassColor = (state, level, pos, tintIndex) -> TFCColors.getGrassColor(pos, tintIndex);
@@ -605,7 +605,7 @@ public final class ClientEventHandler
         TFCBlocks.CAULDRONS.forEach((type, reg) -> type.color().ifPresent(color -> registry.register(blockColor(color), reg.get())));
     }
 
-    public static void registerColorHandlerItems(ColorHandlerEvent.Item event)
+    public static void registerColorHandlerItems(RegisterColorHandlersEvent.Item event)
     {
         final ItemColors registry = event.getItemColors();
         final ItemColor grassColor = (stack, tintIndex) -> TFCColors.getGrassColor(null, tintIndex);
@@ -637,7 +637,7 @@ public final class ClientEventHandler
         event.registerReloadListener(new ColorMapReloadListener(TFCColors::setFoliageWinterColors, TFCColors.FOLIAGE_WINTER_COLORS_LOCATION));
     }
 
-    public static void registerParticleFactories(ParticleFactoryRegisterEvent event)
+    public static void registerParticleFactories(RegisterParticleProvidersEvent event)
     {
         ParticleEngine particleEngine = Minecraft.getInstance().particleEngine;
         particleEngine.register(TFCParticles.BUBBLE.get(), BubbleParticle.Provider::new);

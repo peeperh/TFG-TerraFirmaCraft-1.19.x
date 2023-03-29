@@ -7,11 +7,10 @@
 package net.dries007.tfc.common.capabilities.heat;
 
 import net.dries007.tfc.util.Helpers;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 
 import net.dries007.tfc.TerraFirmaCraft;
 
@@ -81,7 +80,7 @@ public enum Heat
         return max;
     }
 
-    public MutableComponent getDisplayName()
+    public TranslatableContents getDisplayName()
     {
         return Helpers.translatable(translationKey);
     }
